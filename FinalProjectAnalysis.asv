@@ -250,7 +250,7 @@ while finished == false && index <= 10
 end
 %%
 if index >= 10
-    fprintf('Not enough variables given');
+    printf('Not enough variables given');
     values = dialogValues(names, 0.0, values, 'Thiele Small Parameters');
 end
 
