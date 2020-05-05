@@ -1,6 +1,6 @@
 %% General Parameters
 c = 343;            % speed of sound, m/s
-po = 1.2;           % density of air
+po = 1.2;           % density of air        
 pref = 2e-5;        % pressure reference of air, Pa
 
 %% Enter known Thiele Small Parameters
@@ -88,7 +88,7 @@ while finished == false && index <= 10
             Mms == Mmd + 2 * po * a^3 / 3                   %7
             Sd == pi * a^2                                  %8
             Vd == Sd * xmax];                               %9
-
+    
 
     for i = 1:numparams
         if values{i} <= 0
@@ -220,7 +220,8 @@ while finished == false && index <= 10
                     values{i} = numericSymbol(s,a);
                     if  (values{i} == 0)
                         s = solve(eqns(8), a);
-                        values{i} = numericSymbol(s,a);
+                        s = numericSymbol(s,a);
+                        values{i} = s(2);
                     end
                     a = values{i};
                     
@@ -248,8 +249,8 @@ while finished == false && index <= 10
     % Index to break for loop if not enough variables were given
     index = index + 1;
 end
-%%
-if index >= 10
+
+if index >= 4
     fprintf('Not enough variables given');
     values = dialogValues(names, 0.0, values, 'Thiele Small Parameters');
 end
@@ -274,6 +275,8 @@ ws = 2*pi*Fs;
 Gs = (s/ws)^2 / ( (s/ws)^2 + (s/ws/Qts) + 1 );      
 
 %   On Axis Frequency Response
+syms Mas
+Mas = Mms / Sd^2;
 p = (po * Bl * eg / ( 2*pi*Sd*Re*Mas ) ) * Gs * Tu;
 
 %   Peak Frequency
@@ -291,7 +294,3 @@ no = 4*pi^2 * Fs^3 * Vas / ( c^3 * Qes );
 
 %   Displacement Limited Electrical Input Power
 Pe = 0.5 * po * c^2 * ws * Qes * Vd^2 * ( Qts^2 - 0.25 ) / ( Vas * Qts^4 );
-
-
-%% Plots
-
